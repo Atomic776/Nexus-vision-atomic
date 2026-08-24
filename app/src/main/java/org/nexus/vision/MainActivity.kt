@@ -1,10 +1,13 @@
 package org.nexus.vision
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.media.projection.MediaProjectionManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.Gravity
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -19,23 +22,69 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         projectionManager = getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
+        val voidBlack = Color.parseColor("#07070B")
+        val blood = Color.parseColor("#8B1E2B")
+        val ember = Color.parseColor("#E8433A")
+        val bone = Color.parseColor("#E9E6E0")
+        val ash = Color.parseColor("#8D8A96")
+
         val layout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(40, 100, 40, 40)
+            setPadding(60, 140, 60, 60)
+            setBackgroundColor(voidBlack)
         }
 
+        val title = TextView(this).apply {
+            text = "NEXUS VISION"
+            textSize = 26f
+            setTextColor(bone)
+            gravity = Gravity.CENTER
+            setPadding(0, 0, 0, 20)
+        }
+        layout.addView(title)
+
+        val subtitle = TextView(this).apply {
+            text = "MODULE DE CAPTURE ET TRADUCTION"
+            textSize = 11f
+            setTextColor(ash)
+            gravity = Gravity.CENTER
+            setPadding(0, 0, 0, 80)
+            letterSpacing = 0.15f
+        }
+        layout.addView(subtitle)
+
         val info = TextView(this).apply {
-            text = "NEXUS Vision\n\n" +
-                    "Étape 1 : autorise l'affichage par-dessus les autres apps\n" +
-                    "Étape 2 : active le service d'accessibilité (pour les clics)\n" +
-                    "Étape 3 : lance la sélection à l'écran"
+            text = "1. Autorise l'affichage par-dessus les autres apps\n\n" +
+                    "2. Active le service d'accessibilité\n\n" +
+                    "3. Lance la sélection à l'écran"
             textSize = 15f
-            setPadding(0, 0, 0, 60)
+            setTextColor(ash)
+            setPadding(20, 0, 20, 60)
         }
         layout.addView(info)
 
-        val btnOverlay = Button(this).apply {
-            text = "1. Autoriser l'overlay"
+        fun styledButton(label: String, bg: Int, textColor: Int): Button {
+            return Button(this).apply {
+                text = label
+                setTextColor(textColor)
+                textSize = 15f
+                isAllCaps = false
+                val shape = GradientDrawable().apply {
+                    cornerRadius = 24f
+                    setColor(bg)
+                    setStroke(2, blood)
+                }
+                background = shape
+                val params = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    180
+                )
+                params.setMargins(0, 0, 0, 30)
+                layoutParams = params
+            }
+        }
+
+        val btnOverlay = styledButton("1 · AUTORISER L'OVERLAY", voidBlack, ember).apply {
             setOnClickListener {
                 val intent = Intent(
                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -46,16 +95,14 @@ class MainActivity : AppCompatActivity() {
         }
         layout.addView(btnOverlay)
 
-        val btnAccessibility = Button(this).apply {
-            text = "2. Activer l'accessibilité"
+        val btnAccessibility = styledButton("2 · ACTIVER L'ACCESSIBILITÉ", voidBlack, ember).apply {
             setOnClickListener {
                 startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
             }
         }
         layout.addView(btnAccessibility)
 
-        val btnStart = Button(this).apply {
-            text = "3. Lancer la sélection à l'écran"
+        val btnStart = styledButton("3 · LANCER LA SÉLECTION", blood, bone).apply {
             setOnClickListener {
                 val captureIntent = projectionManager.createScreenCaptureIntent()
                 startActivityForResult(captureIntent, REQUEST_CODE_SCREEN_CAPTURE)
@@ -82,3 +129,4 @@ class MainActivity : AppCompatActivity() {
         const val REQUEST_CODE_SCREEN_CAPTURE = 1001
     }
 }
+
