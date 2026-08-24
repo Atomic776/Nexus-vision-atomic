@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="void_black">#07070B</color>
+    <color name="steel">#1C1C26</color>
+    <color name="blood">#8B1E2B</color>
+    <color name="ember">#E8433A</color>
+    <color name="ash">#8D8A96</color>
+    <color name="bone">#E9E6E0</color>
+</resources>
