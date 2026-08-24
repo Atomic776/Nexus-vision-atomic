@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NEXUS Vision</string>
+    <string name="accessibility_service_description">
+        Permet à NEXUS Vision de simuler des appuis à l\'écran pour l\'automatisation personnelle.
+    </string>
+</resources>
